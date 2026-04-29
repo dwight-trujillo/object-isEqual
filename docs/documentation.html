@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object.isEqual() - Comprehensive Documentation</title>
+<style>
+:root{--primary:#1a73e8;--dark:#202124;--gray:#5f6368;--light-bg:#f8f9fa;--border:#dadce0;--code-bg:#f1f3f4;--success:#0d904f;--warning:#f9ab00;--danger:#ea4335;--radius:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65;color:var(--dark);max-width:1000px;margin:0 auto;padding:2rem 1.5rem;background:#fff}
+h1{font-size:2.4rem;color:var(--primary);border-bottom:3px solid var(--primary);padding-bottom:.4rem}
+h2{font-size:1.8rem;color:var(--dark);margin:2.5rem 0 1rem;border-bottom:2px solid var(--border);padding-bottom:.3rem}
+h3{font-size:1.35rem;color:var(--dark);margin:2rem 0 .8rem}
+h4{font-size:1.15rem;color:var(--gray);margin:1.5rem 0 .5rem;font-weight:600}
+p{margin-bottom:1rem;text-align:justify}
+code{background:var(--code-bg);padding:.2em .4em;border-radius:4px;font-family:'Fira Code',monospace;font-size:.92em;color:#37474f;border:1px solid #e0e0e0}
+pre{background:#2d2d2d;color:#f8f8f2;padding:1.2rem;border-radius:var(--radius);overflow-x:auto;margin:1rem 0;font-family:'Fira Code',monospace;font-size:.88rem;line-height:1.6;border:1px solid #444}
+pre code{background:none;color:inherit;border:none;padding:0;font-size:inherit}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0 1.8rem;font-size:.95rem;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+th{background:var(--primary);color:#fff;padding:.7rem 1rem;text-align:left;font-weight:600}
+td{padding:.6rem 1rem;border-bottom:1px solid var(--border)}
+.badge{display:inline-block;padding:.15em .7em;border-radius:12px;font-size:.82em;font-weight:600;color:#fff;margin-right:.4rem}
+.badge-stable{background:var(--success)}.badge-tc39{background:var(--warning);color:#333}.badge-mit{background:#666}
+.note{background:#e8f0fe;border-left:4px solid var(--primary);padding:.8rem 1rem;border-radius:0 var(--radius) var(--radius) 0;margin:1rem 0;font-size:.93rem}
+.toc{background:var(--light-bg);padding:1.2rem 1.5rem;border-radius:var(--radius);margin:1.5rem 0 2rem}
+.toc a{color:var(--primary);text-decoration:none}
+.toc ol{margin:.3rem 0 0 1.5rem}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.85rem;color:var(--gray);text-align:center}
+@media print{body{max-width:100%;padding:0}pre{background:#f5f5f5;color:#000;border:1px solid #ccc}table{box-shadow:none}th{background:#333}}
+</style>
+</head>
+<body>
+<h1>Object.isEqual() - Comprehensive Documentation</h1>
+<p><span class="badge badge-stable">Version 5.1.0</span><span class="badge badge-tc39">TC39 Stage 0</span><span class="badge badge-mit">MIT License</span></p>
+
+<nav class="toc"><strong>Index</strong>
+<ol>
+<li><a href="#api">API Reference</a></li>
+<li><a href="#types">Supported Types</a></li>
+<li><a href="#examples">Usage Examples</a></li>
+<li><a href="#security">Security</a></li>
+<li><a href="#installation">Installation</a></li>
+</ol>
+</nav>
+
+<section id="api">
+<h2>1. API Reference</h2>
+<h3>Object.isEqual(value1, value2[, options])</h3>
+<p>Compares two values and returns true if they are structurally equal.</p>
+<h4>Options</h4>
+<table>
+<tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>strict</code></td><td><code>boolean</code></td><td><code>false</code></td><td>If true, uses Object.is for primitives (0 differs from -0)</td></tr>
+<tr><td><code>customComparators</code></td><td><code>object</code></td><td><code>{}</code></td><td>Functions (a,b)=>boolean indexed by key or Symbol.for('*') for global</td></tr>
+<tr><td><code>maxDepth</code></td><td><code>number</code></td><td><code>1000</code></td><td>Maximum recursion depth</td></tr>
+<tr><td><code>maxSize</code></td><td><code>number</code></td><td><code>10000</code></td><td>Maximum elements in collections (Array, Map, Set)</td></tr>
+<tr><td><code>safe</code></td><td><code>boolean</code></td><td><code>true</code></td><td>If true, silences exceptions from getters and returns false</td></tr>
+</table>
+</section>
+
+<section id="types">
+<h2>2. Supported Types</h2>
+<table>
+<tr><th>Type</th><th>Behavior</th></tr>
+<tr><td>Primitives (number, string, boolean, null, undefined, symbol, bigint)</td><td>Comparison via SameValueZero (default) or Object.is (strict mode)</td></tr>
+<tr><td>Number / Boolean / String wrappers</td><td>Compares primitive value via valueOf()</td></tr>
+<tr><td>Date</td><td>Compares getTime() (includes invalid NaN dates)</td></tr>
+<tr><td>RegExp</td><td>Compares source and flags</td></tr>
+<tr><td>Array</td><td>Compares length and enumerable properties</td></tr>
+<tr><td>Map</td><td>Compares entries by deep structural equality of keys and values</td></tr>
+<tr><td>Set</td><td>Verifies each element has a structural equivalent in the other set</td></tr>
+<tr><td>TypedArrays (all)</td><td>Compares length and elements with SameValueZero</td></tr>
+<tr><td>ArrayBuffer / DataView</td><td>Compares bytes</td></tr>
+<tr><td>Error</td><td>Compares name and message</td></tr>
+<tr><td>WeakMap / WeakSet / Promise</td><td>Referential equality only (always false for different instances)</td></tr>
+<tr><td>Functions</td><td>Two different functions are never equal; ignored when both values are functions</td></tr>
+</table>
+</section>
+
+<section id="examples">
+<h2>3. Usage Examples</h2>
+<h4>Basic</h4>
+<pre><code>Object.isEqual({a:1,b:{c:2}},{a:1,b:{c:2}}); // true</code></pre>
+<h4>Strict mode</h4>
+<pre><code>Object.isEqual(0,-0,{strict:true}); // false</code></pre>
+<h4>Custom comparator</h4>
+<pre><code>Object.isEqual({id:1,ts:100},{id:1,ts:200},{customComparators:{ts:()=>true}}); // true</code></pre>
+<h4>Safe mode</h4>
+<pre><code>var obj={get x(){throw new Error('no')},y:1};
+Object.isEqual(obj,obj,{safe:true}); // false (error captured)</code></pre>
+</section>
+
+<section id="security">
+<h2>4. Security</h2>
+<table>
+<tr><th>Threat</th><th>Mitigation</th></tr>
+<tr><td>Type spoofing via Symbol.toStringTag</td><td>Own-property check before native shortcuts</td></tr>
+<tr><td>Overridden instance methods</td><td>Native methods captured at load time</td></tr>
+<tr><td>Cross-realm objects</td><td>Type detection via Object.prototype.toString</td></tr>
+<tr><td>Hostile getters</td><td>Safe mode captures exceptions</td></tr>
+<tr><td>DoS (deep recursion/large collections)</td><td>Configurable maxDepth and maxSize</td></tr>
+</table>
+</section>
+
+<section id="installation">
+<h2>5. Installation</h2>
+<pre><code>npm install object-is-equal</code></pre>
+<pre><code>require('object-is-equal');
+console.log(Object.isEqual({a:1},{a:1})); // true</code></pre>
+<p>Or include directly in browser:</p>
+<pre><code>&lt;script src="object-isEqual.js"&gt;&lt;/script&gt;</code></pre>
+</section>
+
+<footer class="footer"><p>Object.isEqual - Polyfill v5.1.0 - TC39 Stage 0 Proposal - MIT License</p></footer>
+</body>
+</html>

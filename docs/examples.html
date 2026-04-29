@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object.isEqual() - Reference Examples</title>
+<style>
+:root{--primary:#1a73e8;--dark:#202124;--gray:#5f6368;--light-bg:#f8f9fa;--border:#dadce0;--success:#0d904f;--danger:#ea4335;--radius:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65;color:var(--dark);max-width:960px;margin:0 auto;padding:2rem 1.5rem;background:#fff}
+h1{font-size:2.2rem;color:var(--primary);border-bottom:3px solid var(--primary);padding-bottom:.4rem;margin-bottom:.5rem}
+h2{font-size:1.6rem;color:var(--dark);margin:2.5rem 0 1rem;border-bottom:2px solid var(--border);padding-bottom:.3rem}
+pre{background:#2d2d2d;color:#f8f8f2;padding:1rem 1.2rem;border-radius:var(--radius);overflow-x:auto;margin:.8rem 0 1.2rem;font-family:'Fira Code',monospace;font-size:.88rem;line-height:1.6}
+.example-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1rem 0}
+.example-card{background:var(--light-bg);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem}
+.example-card h3{font-size:1.1rem;margin-bottom:.6rem;color:var(--primary)}
+.result{display:inline-block;padding:.25em .8em;border-radius:12px;font-size:.85em;font-weight:600;margin-top:.5rem}
+.result-true{background:#e6f4ea;color:var(--success);border:1px solid var(--success)}
+.result-false{background:#fce8e6;color:var(--danger);border:1px solid var(--danger)}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.85rem;color:var(--gray);text-align:center}
+@media(max-width:700px){.example-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<h1>Object.isEqual() - Reference Examples</h1>
+<p>Practical examples demonstrating the capabilities of <strong>Object.isEqual</strong> v5.1.0.</p>
+
+<h2>1. Primitives and Special Values</h2>
+<div class="example-grid">
+<div class="example-card"><h3>NaN Equality</h3><pre><code>Object.isEqual(NaN, NaN); // true</code></pre><span class="result result-true">true</span><p>Unlike ===, NaN is equal to itself.</p></div>
+<div class="example-card"><h3>Zero vs Negative Zero</h3><pre><code>Object.isEqual(0, -0); // true (default)
+Object.isEqual(0, -0, { strict: true }); // false</code></pre><span class="result result-true">true</span> / <span class="result result-false">false</span></div>
+</div>
+
+<h2>2. Objects and Nested Structures</h2>
+<div class="example-grid">
+<div class="example-card"><h3>Simple Object</h3><pre><code>Object.isEqual({name:'Alice',age:30},{name:'Alice',age:30}); // true</code></pre><span class="result result-true">true</span></div>
+<div class="example-card"><h3>Circular References</h3><pre><code>var a={}; a.self=a;
+var b={}; b.self=b;
+Object.isEqual(a, b); // true</code></pre><span class="result result-true">true</span></div>
+</div>
+
+<h2>3. Map and Set</h2>
+<div class="example-grid">
+<div class="example-card"><h3>Map with Object Keys</h3><pre><code>var m1=new Map([[{id:1},'val']]);
+var m2=new Map([[{id:1},'val']]);
+Object.isEqual(m1, m2); // true</code></pre><span class="result result-true">true</span></div>
+<div class="example-card"><h3>Set Comparison</h3><pre><code>Object.isEqual(new Set([1,2,3]),new Set([3,2,1])); // true</code></pre><span class="result result-true">true</span><p>Order does not matter.</p></div>
+</div>
+
+<h2>4. Date and RegExp</h2>
+<div class="example-grid">
+<div class="example-card"><h3>Date Comparison</h3><pre><code>Object.isEqual(new Date('2025-01-01'),new Date('2025-01-01')); // true</code></pre><span class="result result-true">true</span></div>
+<div class="example-card"><h3>RegExp</h3><pre><code>Object.isEqual(/abc/gi, /abc/gi); // true
+Object.isEqual(/abc/gi, /abc/g); // false</code></pre><span class="result result-true">true</span> / <span class="result result-false">false</span></div>
+</div>
+
+<h2>5. Custom Comparators</h2>
+<div class="example-grid">
+<div class="example-card"><h3>Per-Key Ignore</h3><pre><code>Object.isEqual({id:1,ts:100},{id:1,ts:200},{customComparators:{ts:()=>true}}); // true</code></pre><span class="result result-true">true</span></div>
+<div class="example-card"><h3>Global Comparator</h3><pre><code>Object.isEqual({a:1,b:'2'},{a:1,b:2},{customComparators:{[Symbol.for('*')]:(x,y)=>x==y}}); // true</code></pre><span class="result result-true">true</span></div>
+</div>
+
+<h2>6. Safe Mode (Security)</h2>
+<div class="example-grid">
+<div class="example-card"><h3>Getter That Throws</h3><pre><code>var obj={get x(){throw new Error('no')},y:1};
+Object.isEqual(obj,obj,{safe:true}); // false</code></pre><span class="result result-false">false</span><p>Exceptions are silently caught.</p></div>
+<div class="example-card"><h3>Without Safe Mode</h3><pre><code>// Object.isEqual(obj,obj,{safe:false}); // throws Error</code></pre><span class="result result-false">throws</span><p>Use safe:false for debugging.</p></div>
+</div>
+
+<footer class="footer"><p>Object.isEqual - Polyfill v5.1.0 - TC39 Stage 0 Proposal - MIT License</p></footer>
+</body>
+</html>
