@@ -1,18 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Object.isEqual() - Deep Structural Equality for JavaScript</title>
+<title>Object.isEqual() - TC39 Proposal</title>
 <style>
 :root{--primary:#1a73e8;--dark:#202124;--gray:#5f6368;--light-bg:#f8f9fa;--border:#dadce0;--success:#0d904f;--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65;color:var(--dark);background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh}
-.hero{text-align:center;padding:4rem 2rem 3rem}
-.hero h1{font-size:3rem;color:var(--primary);margin-bottom:0.5rem}
+.hero{text-align:center;padding:4rem 2rem 2rem}
+.hero h1{font-size:3rem;color:var(--primary);margin-bottom:.5rem}
 .hero p{font-size:1.3rem;color:var(--gray);max-width:700px;margin:0 auto 2rem}
 .badge{display:inline-block;padding:.3em 1em;border-radius:20px;font-size:.85em;font-weight:600;color:#fff;margin:0 .3rem}
 .badge-version{background:var(--success)}.badge-tc39{background:#f9ab00;color:#333}.badge-mit{background:#666}
+.announcement{background:#fff3cd;border:1px solid #ffc107;border-radius:var(--radius);padding:1rem 1.5rem;text-align:center;margin:1rem auto;max-width:600px;font-weight:500}
 .container{max-width:900px;margin:0 auto;padding:0 1.5rem 3rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin:2rem 0}
 .card{background:#fff;border-radius:var(--radius);padding:2rem;box-shadow:0 4px 15px rgba(0,0,0,.08);transition:transform .2s,box-shadow .2s;text-decoration:none;color:var(--dark);display:block}
@@ -20,6 +21,7 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;line-height:1.65;color:var(-
 .card h3{color:var(--primary);font-size:1.3rem;margin-bottom:.8rem}
 .card p{color:var(--gray);font-size:.95rem;line-height:1.5}
 .card .icon{font-size:2rem;margin-bottom:1rem}
+.card-featured{border:2px solid var(--primary);background:linear-gradient(135deg,#e8f0fe 0%,#fff 100%)}
 .quick-start{background:#fff;border-radius:var(--radius);padding:2rem;margin:2rem 0;box-shadow:0 4px 15px rgba(0,0,0,.08)}
 .quick-start h3{color:var(--primary);margin-bottom:1rem}
 pre{background:#2d2d2d;color:#f8f8f2;padding:1.2rem 1.5rem;border-radius:8px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:.9rem;line-height:1.6}
@@ -32,71 +34,74 @@ pre{background:#2d2d2d;color:#f8f8f2;padding:1.2rem 1.5rem;border-radius:8px;ove
 
 <div class="hero">
 <h1>Object.isEqual()</h1>
-<p>Deep structural equality polyfill for ECMAScript. Compare any JavaScript values by their structure, not by reference.</p>
+<p>Deep structural equality polyfill for ECMAScript. Compare any JavaScript values by structure, not by reference.</p>
 <div>
 <span class="badge badge-version">v5.1.0</span>
-<span class="badge badge-tc39">TC39 Stage 0</span>
+<span class="badge badge-tc39">TC39 Stage 0 Proposal</span>
 <span class="badge badge-mit">MIT License</span>
 </div>
 </div>
 
-<div class="container">
+<div class="announcement">
+&#128226; This proposal has been submitted to the ECMAScript Technical Committee (TC39) for consideration.
+<a href="proposal.md">Read the proposal</a>
+</div>
 
+<div class="container">
 <div class="quick-start">
-<h3>Quick Start</h3>
+<h3>&#9889; Quick Start</h3>
 <pre><code>npm install object-is-equal
 
 const isEqual = require('object-is-equal');
-console.log(Object.isEqual({a:1, b:{c:2}}, {a:1, b:{c:2}})); // true
-console.log(Object.isEqual(0, -0, { strict: true }));          // false</code></pre>
+Object.isEqual({a:1, b:{c:2}}, {a:1, b:{c:2}}); // true
+Object.isEqual(0, -0, { strict: true });          // false
+Object.isEqual(new Map([[{id:1},'val']]), new Map([[{id:1},'val']])); // true</code></pre>
 </div>
 
-<h2 style="text-align:center;margin:2rem 0 1rem">Documentation</h2>
-
+<h2 style="text-align:center;margin:2rem 0 1rem">&#128214; Documentation</h2>
 <div class="grid">
 
+<a href="proposal.md" class="card card-featured">
+<div class="icon">&#128221;</div>
+<h3>TC39 Proposal</h3>
+<p>Official proposal document for the ECMAScript committee. Problem statement, solution, semantics, and specification.</p>
+</a>
+
 <a href="docs/documentation.html" class="card">
-<div class="icon">📚</div>
+<div class="icon">&#128218;</div>
 <h3>Full Documentation</h3>
 <p>Complete API reference, supported types, options, installation guide, and security analysis.</p>
 </a>
 
 <a href="docs/examples.html" class="card">
-<div class="icon">💡</div>
+<div class="icon">&#128161;</div>
 <h3>Usage Examples</h3>
-<p>Practical examples: primitives, objects, arrays, Map, Set, Date, RegExp, custom comparators, safe mode.</p>
+<p>Practical examples for all types: primitives, objects, Map, Set, Date, RegExp, custom comparators, safe mode.</p>
 </a>
 
 <a href="docs/executive-report.html" class="card">
-<div class="icon">📊</div>
+<div class="icon">&#128202;</div>
 <h3>Executive Report</h3>
 <p>Product overview, KPIs, competitive analysis, security posture, and TC39 roadmap.</p>
 </a>
 
 <a href="src/object-isEqual.js" class="card">
-<div class="icon">💻</div>
+<div class="icon">&#128187;</div>
 <h3>Source Code</h3>
-<p>View the polyfill source directly. Production-ready, security hardened, zero dependencies.</p>
-</a>
-
-<a href="test/object-isEqual.test.js" class="card">
-<div class="icon">🧪</div>
-<h3>Test Suite</h3>
-<p>47 test cases covering all types, edge cases, and security scenarios.</p>
+<p>Production-ready polyfill. Security hardened, zero dependencies, 100% test coverage.</p>
 </a>
 
 <a href="https://github.com/dwight-trujillo/object-isEqual" class="card">
-<div class="icon">🔗</div>
+<div class="icon">&#128279;</div>
 <h3>GitHub Repository</h3>
 <p>Star, fork, open issues, or contribute to the TC39 proposal.</p>
 </a>
 
 </div>
-
 </div>
 
 <footer class="footer">
-<p>Object.isEqual v5.1.0 · <a href="https://github.com/dwight-trujillo/object-isEqual">GitHub</a> · <a href="https://github.com/dwight-trujillo/object-isEqual/blob/main/LICENSE">MIT License</a></p>
+<p>Object.isEqual v5.1.0 &middot; <a href="https://github.com/dwight-trujillo/object-isEqual">GitHub</a> &middot; <a href="proposal.md">Proposal</a> &middot; <a href="LICENSE">MIT License</a></p>
 </footer>
 
 </body>
