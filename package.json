@@ -1,0 +1,1 @@
+{ "name": "object-is-equal", "version": "5.1.0", "description": "Deep structural equality polyfill", "main": "src/object-isEqual.js", "scripts": { "test": "jest" }, "license": "MIT" }
