@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -31,78 +31,65 @@ pre{background:#2d2d2d;color:#f8f8f2;padding:1.2rem 1.5rem;border-radius:8px;ove
 </style>
 </head>
 <body>
-
 <div class="hero">
 <h1>Object.isEqual()</h1>
 <p>Deep structural equality polyfill for ECMAScript. Compare any JavaScript values by structure, not by reference.</p>
 <div>
-<span class="badge badge-version">v5.1.0</span>
+<span class="badge badge-version">v5.2.0</span>
 <span class="badge badge-tc39">TC39 Stage 0 Proposal</span>
 <span class="badge badge-mit">MIT License</span>
 </div>
 </div>
-
 <div class="announcement">
-&#128226; This proposal has been submitted to the ECMAScript Technical Committee (TC39) for consideration.
+This proposal has been submitted to the ECMAScript Technical Committee (TC39) for consideration.
 <a href="proposal.md">Read the proposal</a>
 </div>
-
 <div class="container">
 <div class="quick-start">
-<h3>&#9889; Quick Start</h3>
+<h3>Quick Start</h3>
 <pre><code>npm install object-is-equal
 
 const isEqual = require('object-is-equal');
 Object.isEqual({a:1, b:{c:2}}, {a:1, b:{c:2}}); // true
 Object.isEqual(0, -0, { strict: true });          // false
-Object.isEqual(new Map([[{id:1},'val']]), new Map([[{id:1},'val']])); // true</code></pre>
+Object.isEqual(obj1, obj2, { snapshot: true });    // atomic comparison (v5.2.0)</code></pre>
 </div>
-
-<h2 style="text-align:center;margin:2rem 0 1rem">&#128214; Documentation</h2>
+<h2 style="text-align:center;margin:2rem 0 1rem">Documentation</h2>
 <div class="grid">
-
 <a href="proposal.md" class="card card-featured">
 <div class="icon">&#128221;</div>
 <h3>TC39 Proposal</h3>
-<p>Official proposal document for the ECMAScript committee. Problem statement, solution, semantics, and specification.</p>
+<p>Official proposal document for the ECMAScript committee.</p>
 </a>
-
 <a href="docs/documentation.html" class="card">
 <div class="icon">&#128218;</div>
 <h3>Full Documentation</h3>
-<p>Complete API reference, supported types, options, installation guide, and security analysis.</p>
+<p>Complete API reference, supported types, options, and security analysis.</p>
 </a>
-
 <a href="docs/examples.html" class="card">
 <div class="icon">&#128161;</div>
 <h3>Usage Examples</h3>
-<p>Practical examples for all types: primitives, objects, Map, Set, Date, RegExp, custom comparators, safe mode.</p>
+<p>Practical examples for all types.</p>
 </a>
-
 <a href="docs/executive-report.html" class="card">
 <div class="icon">&#128202;</div>
 <h3>Executive Report</h3>
-<p>Product overview, KPIs, competitive analysis, security posture, and TC39 roadmap.</p>
+<p>Product overview, KPIs, competitive analysis.</p>
 </a>
-
 <a href="src/object-isEqual.js" class="card">
 <div class="icon">&#128187;</div>
 <h3>Source Code</h3>
-<p>Production-ready polyfill. Security hardened, zero dependencies, 100% test coverage.</p>
+<p>Production-ready polyfill. Zero dependencies.</p>
 </a>
-
 <a href="https://github.com/dwight-trujillo/object-isEqual" class="card">
 <div class="icon">&#128279;</div>
 <h3>GitHub Repository</h3>
-<p>Star, fork, open issues, or contribute to the TC39 proposal.</p>
+<p>Star, fork, or contribute to the TC39 proposal.</p>
 </a>
-
 </div>
 </div>
-
 <footer class="footer">
-<p>Object.isEqual v5.1.0 &middot; <a href="https://github.com/dwight-trujillo/object-isEqual">GitHub</a> &middot; <a href="proposal.md">Proposal</a> &middot; <a href="LICENSE">MIT License</a></p>
+<p>Object.isEqual v5.2.0 · <a href="https://github.com/dwight-trujillo/object-isEqual">GitHub</a> · MIT License</p>
 </footer>
-
 </body>
 </html>
